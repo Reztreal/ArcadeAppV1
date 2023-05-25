@@ -2,6 +2,7 @@
 //
 #include <iostream>
 #include <SDL.h>
+#include "Graphics/Color.h"
 #undef main
 
 const int SCREEN_WIDTH = 224;
@@ -27,9 +28,11 @@ int main(int argc, const char* argv[])
 	}
 
 	SDL_Surface* noptrWindowSurface = SDL_GetWindowSurface(optrWindow);
-	uint32_t color = 0xFF0000;
+	SDL_PixelFormat* pixelFormat = noptrWindowSurface->format;
+	Color::InitColorFormat(pixelFormat);
 
-	SetPixel(noptrWindowSurface, color, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
+	SetPixel(noptrWindowSurface, Color::Orange().GetPixelColor(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	SDL_UpdateWindowSurface(optrWindow);
 
 	SDL_Event sdlEvent;
@@ -59,7 +62,7 @@ void SetPixel(SDL_Surface* noptrWindowSurface, uint32_t color, int x, int y)
 {
 	SDL_LockSurface(noptrWindowSurface);
 
-	uint32_t* pixels = (uint32_t*)noptrWindowSurface->pixels;
+	uint32_t *pixels = (uint32_t*)noptrWindowSurface->pixels;
 
 	size_t index = GetIndex(noptrWindowSurface, y, x);
 
